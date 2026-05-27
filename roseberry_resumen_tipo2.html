@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roseberry · Hegemonía y lenguaje contencioso — Resumen tipo 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --text: #1a1814;
+    --text-secondary: #5a5650;
+    --border: #e0ddd6;
+
+    --conceptual-border: #2563a8;
+    --conceptual-bg: #eff5fc;
+    --conceptual-label: #1e4f8a;
+
+    --historico-border: #b45309;
+    --historico-bg: #fdf6ec;
+    --historico-label: #92400e;
+
+    --etnografico-border: #2d7a4f;
+    --etnografico-bg: #f0faf4;
+    --etnografico-label: #1a5c38;
+
+    --critica-border: #c0392b;
+    --critica-bg: #fdf2f1;
+    --critica-label: #9b2c2c;
+
+    --programatica-border: #6d28d9;
+    --programatica-bg: #f5f0fd;
+    --programatica-label: #5b21b6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0e0c;
+      --surface: #1a1916;
+      --text: #e8e4db;
+      --text-secondary: #9a958a;
+      --border: #2e2c28;
+
+      --conceptual-border: #3b82c4;
+      --conceptual-bg: #0d1a28;
+      --conceptual-label: #60a5d8;
+
+      --historico-border: #d97706;
+      --historico-bg: #1c1208;
+      --historico-label: #f59e0b;
+
+      --etnografico-border: #34a068;
+      --etnografico-bg: #081810;
+      --etnografico-label: #4ade80;
+
+      --critica-border: #e05252;
+      --critica-bg: #1c0808;
+      --critica-label: #f87171;
+
+      --programatica-border: #8b5cf6;
+      --programatica-bg: #100c1c;
+      --programatica-label: #a78bfa;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .wrapper {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 0.4rem;
+  }
+
+  .subtitle {
+    font-style: italic;
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+
+  /* LEYENDA */
+  .leyenda {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .leyenda-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.9rem;
+  }
+
+  .leyenda-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+  }
+
+  .leyenda-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* SECCIONES */
+  .section {
+    margin-bottom: 2.8rem;
+  }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* TARJETAS */
+  .card {
+    border-left: 3px solid;
+    border-radius: 0 6px 6px 0;
+    padding: 1.15rem 1.4rem;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .card.conceptual   { border-color: var(--conceptual-border);  background: var(--conceptual-bg);  }
+  .card.historico    { border-color: var(--historico-border);   background: var(--historico-bg);   }
+  .card.etnografico  { border-color: var(--etnografico-border); background: var(--etnografico-bg); }
+  .card.critica      { border-color: var(--critica-border);     background: var(--critica-bg);     }
+  .card.programatica { border-color: var(--programatica-border);background: var(--programatica-bg);}
+
+  .card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.55rem;
+    font-weight: 500;
+  }
+
+  .card.conceptual   .card-label { color: var(--conceptual-label);  }
+  .card.historico    .card-label { color: var(--historico-label);   }
+  .card.etnografico  .card-label { color: var(--etnografico-label); }
+  .card.critica      .card-label { color: var(--critica-label);     }
+  .card.programatica .card-label { color: var(--programatica-label);}
+
+  .card p {
+    font-size: 0.96rem;
+    line-height: 1.72;
+    color: var(--text);
+  }
+
+  .card strong {
+    font-weight: 600;
+  }
+
+  .card blockquote {
+    margin: 0.75rem 0 0.25rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--border);
+    font-style: italic;
+    color: var(--text-secondary);
+    font-size: 0.93rem;
+  }
+
+  /* SEPARADOR */
+  .sep {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="eyebrow">Resumen tipo 2 · Organizado por categorías argumentativas</div>
+    <h1>Hegemonía y lenguaje contencioso</h1>
+    <div class="subtitle">William Roseberry (2002)</div>
+  </header>
+
+  <!-- LEYENDA -->
+  <div class="leyenda">
+    <div class="leyenda-title">Categorías</div>
+    <div class="leyenda-grid">
+      <div class="leyenda-item">
+        <div class="leyenda-dot" style="background:var(--conceptual-border)"></div>
+        <span>Argumento conceptual</span>
+      </div>
+      <div class="leyenda-item">
+        <div class="leyenda-dot" style="background:var(--historico-border)"></div>
+        <span>Argumento histórico</span>
+      </div>
+      <div class="leyenda-item">
+        <div class="leyenda-dot" style="background:var(--etnografico-border)"></div>
+        <span>Ejemplo etnográfico</span>
+      </div>
+      <div class="leyenda-item">
+        <div class="leyenda-dot" style="background:var(--critica-border)"></div>
+        <span>Crítica o límite</span>
+      </div>
+      <div class="leyenda-item">
+        <div class="leyenda-dot" style="background:var(--programatica-border)"></div>
+        <span>Propuesta programática</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN I -->
+  <div class="section">
+    <div class="section-title">I · El problema: cómo relacionar dominación y resistencia</div>
+
+    <div class="card historico">
+      <div class="card-label">Argumento histórico</div>
+      <p>El ensayo se inscribe en un volumen que propone dos marcos paradigmáticos para estudiar la formación del estado en México: el trabajo de James Scott sobre la resistencia cotidiana de los grupos subordinados, y el de Philip Corrigan y Derek Sayer sobre la formación del estado inglés como proceso multisecular de transformación económica, construcción política y revolución cultural. Los compiladores esperaban que ambos marcos fueran examinados en relación mutua, pero la mayoría de los colaboradores los colocaron en oposición: la "economía moral" campesina frente al "gran arco" del estado triunfal.</p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p><strong>Ambos marcos teóricos comparten una raíz común en E. P. Thompson, lo que permite pensarlos juntos en lugar de oponerlos.</strong> Scott tomó de Thompson la noción de "economía moral" como imagen central de la conciencia campesina; Corrigan y Sayer tomaron su crítica a la "revolución burguesa" como punto de partida para una historia larga del estado inglés. La imagen del "gran arco" —arquitectónica y temporal a la vez— es thompsionana, y articula la posibilidad de que ambas tradiciones sean leídas en continuidad.</p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>Roseberry introduce una tercera metáfora de Thompson: el <strong>"campo de fuerza"</strong>, propuesta en el ensayo "La sociedad inglesa del siglo XVIII: ¿lucha de clases sin clases?" (1978b). Thompson la formula como una imagen física: una corriente eléctrica magnetiza limaduras de hierro distribuidas uniformemente sobre un plato; las limaduras se alinean hacia uno u otro polo, o bien —en el espacio intermedio— quedan orientadas por las líneas de atracción opuestas sin adherirse a ninguno. Aplicada a la sociedad del siglo XVIII, la imagen coloca a la multitud en un polo, a la aristocracia y alta burguesía en el otro, y a los grupos medios (profesionales, comerciantes) oscilando entre dependencia y acción conjunta con la multitud.</p>
+    </div>
+
+    <div class="card critica">
+      <div class="card-label">Crítica o límite</div>
+      <p><strong>La metáfora del campo de fuerza tiene tres limitaciones estructurales que la vuelven insuficiente para el análisis social.</strong> Primero, es bipolar: reduce a dos polos lo que en las situaciones sociales reales son múltiples instancias de dominación y múltiples formas de experiencia popular. Segundo, por su biporalidad, produce diseños simétricos, cuando "lo dominante" y "lo popular" nunca son fenómenos especulares. Tercero, es estática: las nuevas limaduras se acomodan en el diseño preexistente sin alterarlo ni afectar el campo mismo. Estas limitaciones, sin embargo, no anulan su productividad: el valor de la metáfora está en dirigir la atención hacia el campo de tensión más amplio en el que deben situarse los elementos del análisis.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- SECCIÓN II -->
+  <div class="section">
+    <div class="section-title">II · El concepto de hegemonía: reconstrucción desde Gramsci</div>
+
+    <div class="card critica">
+      <div class="card-label">Crítica o límite</div>
+      <p>El concepto de hegemonía ha sido reducido por parte de la ciencia política a "consenso ideológico", y en esa forma ha sido correctamente criticado por los dos marcos de referencia del volumen. Scott subraya que los dominados saben que son dominados, saben cómo y por quiénes, y lejos de consentir esa dominación desarrollan formas sutiles de resistencia, evasión y confrontación. Corrigan y Sayer, desde el polo opuesto, ubican el poder del estado no en el consenso sino en sus formas normativas y coercitivas: procedimientos administrativos, formularios de impuestos, licencias y registros que definen qué tipos de sujetos e identidades son posibles y cuáles quedan excluidos. <strong>Ambas críticas son válidas pero se dirigen contra una versión empobrecida de Gramsci, no contra Gramsci mismo.</strong></p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p><strong>El Gramsci de los Cuadernos de la cárcel comprendió la hegemonía como un concepto material y político, no como sinónimo de consenso, e insistió en su fragilidad constitutiva.</strong> Para Gramsci, la hegemonía articula coerción y consenso en una unidad compleja: el poder de las clases dirigentes pasa simultáneamente por la fuerza y por la capacidad de presentar sus intereses particulares como intereses colectivos. Su análisis del fracaso de la burguesía piamontesa para formar un estado-nación —el núcleo de las "Notas sobre historia italiana" en los Cuadernos— demuestra que la hegemonía es un proyecto siempre amenazado, no un estado de cosas consolidado.</p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>Roseberry construye su lectura a partir de dos pasajes centrales de Gramsci. El primero señala que la unidad histórica de las clases dirigentes "ocurre en el Estado" y es resultado de las relaciones orgánicas entre Estado o sociedad política y sociedad civil. El segundo describe a las clases subalternas como "por definición no unificadas", cuya historia es "disgregada y discontinua" y está entrelazada con la de la sociedad civil. De ahí Gramsci deriva un programa de estudio de seis puntos: desde la formación objetiva de los grupos subalternos en la producción económica, hasta las formaciones que afirman su autonomía integral. <strong>Lo central de este programa no es una teleología hacia la emancipación, sino el carácter dinámico, plural y procesual de las relaciones entre dirigentes y subalternos.</strong></p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>Roseberry extrae seis rasgos del pasaje gramsciano que son clave para pensar los procesos hegemónicos: (1) pluralidad y diversidad tanto en las clases dirigentes como en las subalternas; (2) carácter problemático de la unidad de las clases dirigentes, que requiere el control del estado pero no lo presupone; (3) necesidad de estudiar simultáneamente, y no sucesivamente, las dimensiones económica, cultural y política de la formación de clase; (4) la diferenciación espacial como eje analítico, es decir, el desarrollo desigual de poderes sociales en espacios regionales; (5) los grupos subalternos no están capturados por el consenso, sino situados dentro de una gama dinámica que va de la adhesión pasiva a la afirmación de la autonomía; (6) las relaciones entre dirigentes y subalternos se caracterizan por la disputa, la lucha y la discusión, y la acción subalterna ocurre siempre dentro de los marcos institucionales existentes, no fuera de ellos.</p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>La propuesta central del ensayo: <strong>usar la hegemonía no para entender el consenso sino para entender la lucha</strong>. Lo que la hegemonía construye no es una ideología compartida sino "un marco común material y significativo para vivir a través de los órdenes sociales caracterizados por la dominación, hablar de ellos y actuar sobre ellos". Este marco es en parte discursivo: establece los términos centrales en torno a los cuales y dentro de los cuales puede tener lugar la controversia. No determina la posición de los actores, pero sí el lenguaje en que deben expresarse para ser inteligibles dentro del campo de fuerza.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- SECCIÓN III -->
+  <div class="section">
+    <div class="section-title">III · El lenguaje contencioso: ejemplos etnográficos</div>
+
+    <div class="card etnografico">
+      <div class="card-label">Ejemplo etnográfico</div>
+      <p>El primer caso es el estudio de Daniel Nugent y Ana Alonso sobre los namiquipeños (Chihuahua), quienes en 1926 rechazaron la dotación de un ejido ofrecida por el estado posrevolucionario. <strong>El rechazo no es un acto de ignorancia o desafección abstracta: es la defensa de un conjunto específico de relaciones previas entre la comunidad, la tierra y el estado central, relaciones que el ejido como institución negaba y reemplazaba.</strong> Los representantes de la Comisión Nacional Agraria quedaron sorprendidos ante este rechazo porque no comprendían que su "oferta generosa" era percibida como una forma de sujeción. El lenguaje de la reforma agraria —elaborado en la Ciudad de México por abogados, burócratas y maestros, articulado en tecnicismos legales y en apelaciones a una "patria nacional" abstracta— estaba despojado de toda referencia local reconocible. Las comunidades, sus "patrias chicas", sus paisajes cargados de historia y significado, quedaban reducidas a categorías catastrales: tantas hectáreas de tal tipo de tierra para tal tipo de uso. La distancia era física, social y retórica a la vez.</p>
+    </div>
+
+    <div class="card etnografico">
+      <div class="card-label">Ejemplo etnográfico</div>
+      <p>El segundo caso es el análisis de Terri Koreck sobre los nombres en disputa de la comunidad donde realizó su trabajo de campo. La comunidad tiene tres nombres en juego: Cuchillo Parado (el nombre local, con raíces históricas profundas), Veinticinco de Marzo (el nombre oficial, inscrito en registros y mapas estatales) y Nuestra Señora de las Begonias (otro nombre en circulación). <strong>Cada nombre no es simplemente una denominación: expresa intereses e historias diferentes, visiones distintas de la comunidad y de su relación con la nación.</strong> El estado se arroga el poder de nombrar, de crear mapas con marbetes sancionados oficialmente. Los residentes pueden reconocer ese derecho formal pero rechazar ese nombre en sus intercambios cotidianos, siguiendo refiriéndose a Cuchillo Parado. Roseberry señala que, desde la perspectiva de Scott, esto sería un "discurso oculto"; pero lo importante es que los discursos públicos y ocultos existen dentro de un marco discursivo común que les da sentido a ambos: es ese marco el que hace que la disputa sobre el nombre sea inteligible como disputa.</p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>A partir de estos dos casos, Roseberry formula una observación crucial: <strong>ni los namiquipeños ni los pobladores de Cuchillo Parado eligieron autónomamente el terreno de su lucha; ese terreno fue producido por el propio proceso hegemónico.</strong> El estado tampoco eligió ese terreno particular de disputa: la sorpresa de los funcionarios de la CNA ante el rechazo namiquipeño lo demuestra. Los puntos contenciosos —las "palabras" por las que un estado centralizador y una comunidad local pueden pelear— emergen del proceso hegemónico mismo, independientemente de las intenciones de los actores. Una vez que emergen, pueden cuestionar la estructura de dominación entera, más allá de lo que cualquiera de las partes se proponía.</p>
+    </div>
+
+    <div class="card etnografico">
+      <div class="card-label">Ejemplo etnográfico</div>
+      <p>Roseberry introduce también el caso del enunciado colonial "Y venimos a contradecir". Esta frase expresa oposición y solidaridad comunitaria, pero para ser eficaz debe adoptar las formas legítimas de procedimiento del orden dominante: dirigirse a las autoridades coloniales correctas, usar los apelativos adecuados, seguir el orden protocolar de presentación, quedar registrada en las oficinas coloniales correspondientes. <strong>El enunciado reconoce e interpela al poder al mismo tiempo que protesta contra él</strong>: censura el abuso del poder reconociendo implícitamente su uso legítimo. Este es el funcionamiento del marco discursivo común en acción: no impide la resistencia, pero define las formas dentro de las cuales la resistencia puede ser registrada y escuchada.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- SECCIÓN IV -->
+  <div class="section">
+    <div class="section-title">IV · Poder y fragilidad del marco discursivo</div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>Roseberry analiza el poder del marco discursivo apoyándose en Corrigan y Sayer: los estados "afirman", definen formas e imágenes aceptables de actividad social, regulan gran parte de la vida social, sacralizan clasificaciones (edad, sexo), aprueban unas formas de actividad y reprueban otras. Este poder tiene consecuencias culturales acumulativas sobre cómo las personas se identifican a sí mismas y su "lugar" en el mundo. <strong>El poder del marco discursivo no reside en el consenso sino en la capacidad de establecer formas prescritas para expresar tanto la aceptación como el descontento: el estado establece no qué pensar sino cómo hablar.</strong></p>
+    </div>
+
+    <div class="card critica">
+      <div class="card-label">Crítica o límite</div>
+      <p>Sin embargo, Roseberry insiste en la fragilidad de estos marcos. A nivel lingüístico, un lenguaje común que atraviese relaciones de dominación es históricamente muy raro y nunca se ha logrado en México: los sociolingüistas trabajan casi siempre con situaciones bilingües en que los grupos subordinados disponen de "lenguajes de la solidaridad" propios. A nivel institucional, el modelo de Corrigan y Sayer presupone un estado denso, consolidado y eficaz —algo que tampoco ha sido frecuente en México. El análisis de Romana Falcón sobre los jefes políticos del porfiriato, el de Rockwell sobre la educación rural en Tlaxcala (donde las metas del centro chocan con las directivas de élites y maestros locales que deben responder a demandas de los pueblos), y el de Mallon sobre los conflictos en la Sierra de Puebla —donde el lenguaje del liberalismo adquiere inflexiones específicas al insertarse en las relaciones de clase regionales— muestran que <strong>el estado que "nunca deja de hablar" habla con frecuencia sin auditorio, o ante auditorios que oyen cosas distintas y retraducen el mensaje al repetirlo.</strong></p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- SECCIÓN V -->
+  <div class="section">
+    <div class="section-title">V · Propuesta metodológica y conclusión</div>
+
+    <div class="card programatica">
+      <div class="card-label">Propuesta programática</div>
+      <p><strong>Roseberry propone reemplazar la noción de "hegemonía" por la de "proceso hegemónico", y tratarla como un proyecto del estado —inarticulado pero necesario— antes que como un logro consumado.</strong> Esta reformulación permite usar el concepto para cartografiar líneas de debilidad y división en lugar de suponer integración. El punto de entrada analítico privilegiado son los puntos de ruptura del marco discursivo: allí donde las celebraciones nacionales son recibidas con indiferencia y los lugares o fechas locales se celebran en su lugar; allí donde el lenguaje del liberalismo adquiere acentos regionales; allí donde las reformas centrales producen respuestas inesperadas para sus propios promotores. Estos puntos de ruptura no deben leerse como un modelo bipolar de oposición entre estado y cultura popular, sino como entradas en un campo de fuerza multidimensional en el que operan simultáneamente múltiples patrones de desigualdad y dominación regionales con configuraciones históricas únicas.</p>
+    </div>
+
+    <div class="card programatica">
+      <div class="card-label">Propuesta programática</div>
+      <p>La conclusión del ensayo formula una doble exigencia analítica. Primero: <strong>la cultura popular no debe ser tratada como un depósito intemporal de valores igualitarios auténticos</strong>, sino como algo formado dentro del campo de fuerza y moldeado por él. Segundo: el estado no debe ser tratado como una máquina de fabricar consensos, sino como un actor que persigue proyectos hegemónicos cuyo éxito es siempre parcial y disputado. Vinculando cultura popular y formación del estado bajo la categoría de proceso hegemónico, se puede trazar un mapa más complejo de sus relaciones mutuas sin reducirlas a una oposición simple ni a una lógica de dominación total.</p>
+    </div>
+  </div>
+
+  <footer>
+    Resumen tipo 2 generado sobre: Roseberry, W. (2002). "Hegemonía y el lenguaje contencioso". En Joseph, G. M. y Nugent, D. (comps.), Aspectos cotidianos de la formación del estado.
+  </footer>
+
+</div>
+</body>
+</html>

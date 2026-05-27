@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shore · La antropología y el estudio de la política pública — Resumen tipo 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --text: #1a1814;
+    --text-secondary: #5a5650;
+    --border: #e0ddd6;
+
+    --conceptual-border: #2563a8;
+    --conceptual-bg: #eff5fc;
+    --conceptual-label: #1e4f8a;
+
+    --historico-border: #b45309;
+    --historico-bg: #fdf6ec;
+    --historico-label: #92400e;
+
+    --etnografico-border: #2d7a4f;
+    --etnografico-bg: #f0faf4;
+    --etnografico-label: #1a5c38;
+
+    --critica-border: #c0392b;
+    --critica-bg: #fdf2f1;
+    --critica-label: #9b2c2c;
+
+    --programatica-border: #6d28d9;
+    --programatica-bg: #f5f0fd;
+    --programatica-label: #5b21b6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0e0c;
+      --surface: #1a1916;
+      --text: #e8e4db;
+      --text-secondary: #9a958a;
+      --border: #2e2c28;
+
+      --conceptual-border: #3b82c4;
+      --conceptual-bg: #0d1a28;
+      --conceptual-label: #60a5d8;
+
+      --historico-border: #d97706;
+      --historico-bg: #1c1208;
+      --historico-label: #f59e0b;
+
+      --etnografico-border: #34a068;
+      --etnografico-bg: #081810;
+      --etnografico-label: #4ade80;
+
+      --critica-border: #e05252;
+      --critica-bg: #1c0808;
+      --critica-label: #f87171;
+
+      --programatica-border: #8b5cf6;
+      --programatica-bg: #100c1c;
+      --programatica-label: #a78bfa;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .wrapper { max-width: 780px; margin: 0 auto; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 { font-size: 1.9rem; font-weight: 600; line-height: 1.25; margin-bottom: 0.4rem; }
+  .subtitle { font-style: italic; color: var(--text-secondary); font-size: 1rem; }
+
+  .leyenda {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .leyenda-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.9rem;
+  }
+
+  .leyenda-grid { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+
+  .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; }
+
+  .leyenda-dot { width: 11px; height: 11px; border-radius: 2px; flex-shrink: 0; }
+
+  .section { margin-bottom: 2.8rem; }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card {
+    border-left: 3px solid;
+    border-radius: 0 6px 6px 0;
+    padding: 1.15rem 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .card.conceptual   { border-color: var(--conceptual-border);  background: var(--conceptual-bg);  }
+  .card.historico    { border-color: var(--historico-border);   background: var(--historico-bg);   }
+  .card.etnografico  { border-color: var(--etnografico-border); background: var(--etnografico-bg); }
+  .card.critica      { border-color: var(--critica-border);     background: var(--critica-bg);     }
+  .card.programatica { border-color: var(--programatica-border);background: var(--programatica-bg);}
+
+  .card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.55rem;
+    font-weight: 500;
+  }
+
+  .card.conceptual   .card-label { color: var(--conceptual-label);  }
+  .card.historico    .card-label { color: var(--historico-label);   }
+  .card.etnografico  .card-label { color: var(--etnografico-label); }
+  .card.critica      .card-label { color: var(--critica-label);     }
+  .card.programatica .card-label { color: var(--programatica-label);}
+
+  .card p { font-size: 0.96rem; line-height: 1.72; color: var(--text); }
+  .card strong { font-weight: 600; }
+
+  .sep { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="eyebrow">Resumen tipo 2 · Organizado por categorías argumentativas</div>
+    <h1>La antropología y el estudio de la política pública</h1>
+    <div class="subtitle">Cris Shore (2010) · Antípoda N°10</div>
+  </header>
+
+  <div class="leyenda">
+    <div class="leyenda-title">Categorías</div>
+    <div class="leyenda-grid">
+      <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--conceptual-border)"></div><span>Argumento conceptual</span></div>
+      <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--historico-border)"></div><span>Argumento histórico</span></div>
+      <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--etnografico-border)"></div><span>Ejemplo etnográfico</span></div>
+      <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--critica-border)"></div><span>Crítica o límite</span></div>
+      <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--programatica-border)"></div><span>Propuesta programática</span></div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN I -->
+  <div class="section">
+    <div class="section-title">I · El giro interpretativo y el lugar de la antropología</div>
+
+    <div class="card historico">
+      <div class="card-label">Argumento histórico</div>
+      <p>El campo de los Estudios de Políticas Públicas, surgido de las exigencias tecnocráticas de la Segunda Guerra Mundial, atraviesa un momento de madurez marcado por una creciente incertidumbre metodológica. La hegemonía del positivismo y del modelo de elección racional —que entiende la formulación de políticas como una actividad cuasi-científica de diagnóstico e implementación, comparable al trabajo de un médico clínico— enfrenta un desafío creciente desde aproximaciones interpretativas, cualitativas y etnográficas. <strong>Este "giro interpretativo" repite el movimiento que la propia antropología hizo en los años sesenta y setenta, cuando abandonó el paradigma función a favor del paradigma significado.</strong></p>
+    </div>
+
+    <div class="card critica">
+      <div class="card-label">Crítica o límite</div>
+      <p><strong>La visión dominante en los Estudios de Políticas Públicas define la política pública como programa de acción de élites gubernamentales, confinando el análisis a las preguntas de cómo gobiernan los gobernantes.</strong> El Oxford Handbook of Public Policy (Goodin, Rein y Moran, 2006) es citado como ejemplo paradigmático de esta tendencia: define las políticas como instrumentos de la "ambición autoritaria" del Estado y concluye con resúmenes de discursos presidenciales y reales, como si eso fuera la sustancia del análisis de políticas. El libro de Iris Geva-May, Thinking Like a Policy Analyst (2005), lleva esta lógica al extremo al equiparar el análisis de políticas con el diagnóstico clínico: una actividad experta que no debe dejarse en manos de no especialistas. Shore replica que nada sería más limitante que dejar el análisis de políticas exclusivamente a quienes las formulan.</p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>La aproximación antropológica se distingue del modelo racionalista en varios ejes fundamentales. Mientras el enfoque positivista conceptualiza los procesos de formulación como cadenas lineales que van de la declaración de principios a la implementación, <strong>la antropología resalta la complejidad, el desorden y el carácter disputado de esos procesos, tal como son experimentados "en el terreno" por las personas afectadas.</strong> El interés central no es el contenido de una política ni su eficiencia técnica, sino lo que esa política significa para sus destinatarios: sus efectos en las identidades, las subjetividades y las relaciones sociales. Esto implica tratar el concepto mismo de "política pública" no como un presupuesto dado, sino como algo que debe ser investigado y problematizado: ¿qué funciones cumple, qué intereses promueve, cuáles son sus efectos sociales?</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- SECCIÓN II -->
+  <div class="section">
+    <div class="section-title">II · La semántica de "política pública" como punto de entrada analítico</div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>Shore propone tratar las políticas públicas como lo que Raymond Williams llamó una "palabra clave": un término en el cual y a través del cual se pueden rastrear grandes procesos de cambio social, histórico y cultural. Un análisis etimológico del término en inglés revela que "policy" proviene del griego polis y del latín politia, y que sus significados originales incluían no solo "arte de gobierno" sino también "estratagema", "astucia" y "engaño". Con la fundación de la policía moderna de Robert Peel en 1829, el campo semántico se bifurcó: la administración del orden interno pasó al dominio de lo "policial", mientras la "política" se "hizo respetable" como curso de acción de gobiernos y partidos. <strong>El argumento clave es que esta separación semántica oculta la naturaleza inherentemente política de la formulación de políticas, presentándola como un campo técnico-neutral separado del poder.</strong> El hecho de que en muchas lenguas (italiano, danés) no exista una palabra que distinga "policy" de "politics" refuerza esta sospecha.</p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>Las políticas pueden ser útilmente conceptualizadas como "símbolos condensados" en el sentido de Turner (1967) y Ortner (1973): son ambiguas, polisémicas, tienen múltiples significados que no pueden ser especificados con precisión científica. <strong>Esta polisemia no es un defecto analítico sino la clave para entender su funcionamiento social: como los mitos de Malinowski en las sociedades trobriand, las políticas proveen narrativas retóricas que justifican el presente, legitiman a quienes ejercen autoridad, unifican pasado y presente, y definen las fronteras simbólicas entre "nosotros" y "ellos".</strong> Esta homología entre política pública y mito —entre la formulación de políticas en sociedades letradas y la función del mito en sociedades no letradas— es uno de los gestos comparativos más productivos del texto.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- SECCIÓN III -->
+  <div class="section">
+    <div class="section-title">III · Cinco tesis sobre las políticas públicas (Shore y Wright, 1997)</div>
+
+    <div class="card programatica">
+      <div class="card-label">Propuesta programática</div>
+      <p>Shore sistematiza su programa de investigación en cinco argumentos, desarrollados originalmente con Susan Wright en Anthropology of Policy (1997). El primero: <strong>las políticas reflejan "racionalidades de gobierno" o gubernamentalidades</strong> —maneras de pensar el mundo que contienen modelos implícitos de sociedad y de cómo los individuos deben relacionarse entre sí. El caso más significativo es el del neoliberalismo, cuyas políticas (New Public Management, reforma de instituciones públicas) operan a través de "técnicas del yo": tecnologías que inculcan hábitos de autogestión y autorregulación, de modo que el gobierno opera "desde la distancia", sin coerción directa. El arte del gobierno moderno se convierte así en el arte de hacer que los individuos se gobiernen a sí mismos.</p>
+    </div>
+
+    <div class="card programatica">
+      <div class="card-label">Propuesta programática</div>
+      <p>El segundo argumento: <strong>las políticas son inherentemente instrumentales pero no por ello están vacías de simbolismo.</strong> Son herramientas de intervención social para administrar, regular y cambiar la sociedad, expresan una "voluntad de poder" —como reconocen los propios autores del Oxford Handbook—, pero esa voluntad de poder siempre está inscrita en un proceso simbólico y significativo. La pregunta clave no es "¿qué hacen las políticas?" sino "¿a quién pertenece la voluntad política que expresan y cómo se vuelve autoritaria y dominante?". El tercer argumento: <strong>las políticas son fenómenos políticos cuya naturaleza política está sistemáticamente oculta tras el lenguaje objetivo y legal-racional con que son presentadas.</strong> Funcionan mejor cuando son percibidas como soluciones "naturales" o técnicas, desplazando el debate a un registro donde el desacuerdo parece inapropiado o imposible.</p>
+    </div>
+
+    <div class="card programatica">
+      <div class="card-label">Propuesta programática</div>
+      <p>El cuarto argumento: <strong>un enfoque centrado en las políticas provee un método de investigación superior para explorar los mundos de los propios formuladores</strong>, no solo los de sus destinatarios. La observación participante etnográfica permite ver lo que las personas de hecho hacen, a diferencia de lo que dicen que hacen —algo que cuestionarios y grupos focales no logran—. Esta aproximación empírica genera "descripción densa" de alta calidad y puede articularse con la propuesta de George Marcus de una "etnografía multilocal": seguir actores, instituciones y objetos a través de múltiples sitios, rastreando las conexiones entre lo local y lo global dentro de comunidades epistémicas específicas. El quinto argumento: <strong>las políticas tienen efectos que sobrepasan las intenciones de sus autores y, una vez creadas, desarrollan "vidas sociales" propias</strong> —siguiendo la sugerencia de Appadurai (1986)—, generando consecuencias imprevistas que deben ser analizadas en sí mismas.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- SECCIÓN IV -->
+  <div class="section">
+    <div class="section-title">IV · Las políticas como constructoras de subjetividades</div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p><strong>Uno de los efectos más importantes de las políticas es la construcción de nuevas categorías de subjetividad y nuevos tipos de sujetos políticos.</strong> Las políticas no simplemente asignan identidades: las construyen activamente. Desde la cuna hasta la tumba los individuos son categorizados, clasificados y regulados por procesos de política pública sobre los cuales tienen poco control o conciencia. Shore ilustra esto con el formulario verde del Departamento de Justicia de Estados Unidos que se entrega a los viajeros internacionales al ingresar al país: el formulario agrupa en la misma categoría de "Otro" no deseado a enfermos contagiosos, discapacitados mentales, drogadictos, terroristas, espías, antiguos nazis y migrantes ilegales. Lo que estas taxonomías revelan no es "indiferencia burocrática" sino la lógica clasificatoria de las políticas de seguridad fronteriza norteamericanas, que construyen activamente la imagen del ciudadano estadounidense ideal por contraste con múltiples categorías de alteridad peligrosa.</p>
+    </div>
+
+    <div class="card conceptual">
+      <div class="card-label">Argumento conceptual</div>
+      <p>Shore sostiene que <strong>la categoría "política pública" es un producto específico de la sociedad industrial occidental, tal vez uno de los rasgos definitorios de la modernidad</strong>, en tanto incorpora los principios de lógica cartesiana e instrumentalismo legal-racional equiparados con el gobierno moderno. Se apela a las políticas cuando las reglas deben hacerse visibles o explícitas, cuando las relaciones deben ser formalizadas, o cuando las decisiones requieren el sello de una autoridad legítima. Las sociedades que no operan bajo esta lógica —como los pueblos tribales amazónicos o las comunidades de Papúa-Nueva Guinea— no carecen de reglas o planes, pero traducir lo que hacen como "políticas" sería inapropiado porque sus reglas pertenecen a un orden social y semántico completamente distinto. Esta comparación intercultural obliga a obtener distancia crítica sobre lo que el concepto de "política pública" hace en nuestras propias sociedades.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- SECCIÓN V -->
+  <div class="section">
+    <div class="section-title">V · Estudios de caso etnográficos</div>
+
+    <div class="card etnografico">
+      <div class="card-label">Ejemplo etnográfico</div>
+      <p>El primer caso es el trabajo de campo de Shore entre funcionarios de la Unión Europea en Bruselas (1995-1996), centrado en la política de la Unión Económica y Monetaria (UEM) y la introducción del euro. <strong>El caso ilustra con precisión etnográfica cómo la naturaleza política de una política puede ser encubierta bajo el lenguaje técnico-económico, haciendo que el desacuerdo parezca irracional.</strong> La Comisión Europea declaró que el éxito del cambio dependía de "la completa aceptación del público", pero en la práctica lo que se buscaba era el "consentimiento pasivo" o "consenso permisivo": no apoyo activo sino ausencia de resistencia organizada. En Alemania, dos tercios de la población se oponía a la moneda única, por cuanto el marco alemán era el símbolo más perdurable del éxito e identidad nacionales de posguerra. La respuesta de los funcionarios de la UE fue una campaña de 39 mensajes diferenciados por Estado miembro, que presentaba la UEM como un asunto técnico-económico —no constitucional— y descartaba las preocupaciones públicas como "miedos irracionales". El jefe de la Comisión Estadística Europea (Eurostat) afirmó que el debate público no era necesario porque los ciudadanos "ya se habían inscrito" cuando sus gobiernos firmaron el Tratado de Maastricht de 1992. Ante la pregunta de Shore sobre cómo respondería la Comisión a quienes alegaran no haber sido consultados, el funcionario encogió los hombros y dijo que "los perros pueden ladrar, pero la caravana sigue su camino". La política tuvo éxito no por consenso sino por evasión total del debate y clausura de cualquier posibilidad de disenso.</p>
+    </div>
+
+    <div class="card etnografico">
+      <div class="card-label">Ejemplo etnográfico</div>
+      <p>El segundo caso proviene del libro de Barbara Cruikshank The Will to Empower (1999), sobre la gobernanza de la pobreza en Estados Unidos. <strong>El caso muestra que las formas más efectivas de dominación son frecuentemente las que no tienen rostro, las que no presentan ningún blanco visible al cual oponerse.</strong> Cruikshank descubre hacia 1989 que las canecas de basura en un barrio de Minneapolis tienen candados nuevos, lo que elimina el dumpster diving como medio de subsistencia para recicladores y personas sin hogar, que quedan forzados a robar o someterse a los servicios sociales. Como activista de derechos civiles, intenta rastrear el origen de esta política: los cajeros de la tienda la atribuyen a responsabilidad legal; un activista comunitario, a quejas de los vecinos por cuestiones de seguridad infantil; los tenderos, al ahorro en el servicio de recolección; trabajadores de salud pública, a razones sanitarias. La empresa de contenedores, las aseguradoras y la administración municipal tampoco pueden identificar el autor de la política. Las personas sin hogar concluyen que fue "el sistema" para sacarlos de la calle. Cruikshank no logra rastrear ningún origen, lo que lleva a Shore a concluir que la pregunta por la autoría de una política puede ser menos importante que el análisis de sus efectos: las políticas pueden ser más eficaces precisamente porque no tienen autor específico identificable, porque operan como constelaciones de control que nadie diseñó deliberadamente pero que funcionan como si alguien lo hubiera hecho.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- SECCIÓN VI -->
+  <div class="section">
+    <div class="section-title">VI · Conclusión y límites de la aproximación</div>
+
+    <div class="card critica">
+      <div class="card-label">Crítica o límite</div>
+      <p>Shore reconoce que la aproximación interpretativa y simbólica a las políticas —inspirada en Geertz, Turner y la tradición del análisis cultural— tiene sus propios límites. <strong>Centrarse en los significados culturales, por sí solo, no es suficiente para explicar fenómenos particulares: para entender lo que las políticas significan hay que considerar los contextos socioeconómicos, políticos e históricos más amplios en que están inmersas.</strong> El caso de los candados en los contenedores no puede explicarse solo como un texto cultural: requiere atención a las relaciones de poder que organizan la vida de los sin hogar, las lógicas del liberalismo avanzado, la privatización de funciones estatales y la fragmentación de la responsabilidad política en sistemas de gobierno de múltiples niveles. La antropología, dice Shore, debe ir más allá de la lectura simbólica para analizar el rol social que cumplen las políticas.</p>
+    </div>
+
+    <div class="card programatica">
+      <div class="card-label">Propuesta programática</div>
+      <p><strong>La contribución distintiva de la antropología al estudio de las políticas públicas consiste en tratar la política pública como un principio metaorganizacional e ideológico de las sociedades contemporáneas, y no como un objeto técnico que debe ser evaluado.</strong> Esto permite a los científicos sociales —en la tradición de Weber, Geertz y Foucault— ser críticos y analíticos sin tener que ser prescriptivos, sin subordinar el análisis a la necesidad de "aconsejar a los formuladores". El estudio de las políticas, en este marco, es un instrumento para reflexionar sobre transformaciones más generales: la expansión de la gubernamentalidad neoliberal, la emergencia de nuevas racionalidades de gobierno, la construcción de sujetos políticos, la relación entre lo local y lo global. No hay una única manera de analizar la política pública: el método debe adaptarse a los aspectos particulares que se desea iluminar. Lo que sí es constante es la premisa de que la entidad llamada "política pública" es rara vez un objeto de estudio fijo y no problemático.</p>
+    </div>
+  </div>
+
+  <footer>
+    Resumen tipo 2 generado sobre: Shore, C. (2010). "La antropología y el estudio de la política pública: reflexiones sobre la 'formulación' de las políticas". Antípoda, N°10, pp. 21-49.
+  </footer>
+
+</div>
+</body>
+</html>
