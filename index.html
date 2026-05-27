@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wiki Académica — Andrea Tapia Urra</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Spectral, Georgia, serif;
+    background: #f7f5f0;
+    color: #1a1814;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .hero {
+    background: #1a1814;
+    color: #f7f5f0;
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    color: #9a958a;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .hero-tag {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 0.5px solid #3a3830;
+    color: #9a958a;
+    font-style: normal;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #5a5650;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5px solid #e0ddd6;
+  }
+
+  .curso {
+    margin-bottom: 3rem;
+  }
+
+  .curso-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .curso-emoji {
+    font-size: 1.5rem;
+  }
+
+  .curso-nombre {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a1814;
+    flex: 1;
+  }
+
+  .curso-toggle {
+    font-size: 0.8rem;
+    color: #5a5650;
+    transition: transform 0.2s;
+  }
+
+  .curso-toggle.open {
+    transform: rotate(180deg);
+  }
+
+  .curso-body {
+    padding-left: 2.5rem;
+  }
+
+  .clase {
+    margin-bottom: 1.25rem;
+  }
+
+  .clase-header {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #5a5650;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    padding: 6px 0;
+    border-bottom: 0.5px dashed #e0ddd6;
+  }
+
+  .lectura {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 0.5px solid #e0ddd6;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: #1a1814;
+    transition: all 0.15s;
+  }
+
+  .lectura:hover {
+    background: #fafaf7;
+    border-color: #b4b2a9;
+    transform: translateX(3px);
+  }
+
+  .lectura-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .lectura-info { flex: 1; }
+
+  .lectura-autor {
+    font-size: 0.75rem;
+    color: #5a5650;
+    font-style: italic;
+    margin-bottom: 2px;
+  }
+
+  .lectura-titulo {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #1a1814;
+  }
+
+  .lectura-arrow {
+    font-size: 0.8rem;
+    color: #b4b2a9;
+    align-self: center;
+  }
+
+  .proximamente {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #f7f5f0;
+    border: 0.5px dashed #e0ddd6;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    color: #b4b2a9;
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.75rem;
+    color: #b4b2a9;
+    border-top: 0.5px solid #e0ddd6;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Wiki Académica</h1>
+  <p>Andrea Tapia Urra · Doctorado en Antropología · PUC</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Intervención socioambiental</span>
+    <span class="hero-tag">Dispositivos estatales</span>
+    <span class="hero-tag">Cultura-naturaleza</span>
+    <span class="hero-tag">Territorio</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section-title">📚 Mis cursos — 2026</div>
+
+  <!-- CURSO 1: ANTROPOLOGÍA DEL ESTADO -->
+  <div class="curso">
+    <div class="curso-header" onclick="toggleCurso('estado')">
+      <span class="curso-emoji">🏛️</span>
+      <span class="curso-nombre">Antropología del Estado</span>
+      <span class="curso-toggle open" id="toggle-estado">▼</span>
+    </div>
+    <div class="curso-body" id="body-estado">
+
+      <div class="clase">
+        <div class="clase-header">➡️ Clase 4 · 27 de Mayo</div>
+
+        <a class="lectura" href="roseberry_resumen_tipo2.html">
+          <span class="lectura-icon">📖</span>
+          <div class="lectura-info">
+            <div class="lectura-autor">Roseberry, W.</div>
+            <div class="lectura-titulo">Hegemonía y lenguaje contencioso</div>
+          </div>
+          <span class="lectura-arrow">→</span>
+        </a>
+
+        <a class="lectura" href="shore_resumen_tipo2.html">
+          <span class="lectura-icon">📖</span>
+          <div class="lectura-info">
+            <div class="lectura-autor">Shore, C.</div>
+            <div class="lectura-titulo">La antropología y el estudio de la política pública</div>
+          </div>
+          <span class="lectura-arrow">→</span>
+        </a>
+
+        <a class="lectura" href="gledhill_guia_v3.html">
+          <span class="lectura-icon">📋</span>
+          <div class="lectura-info">
+            <div class="lectura-autor">Gledhill, J.</div>
+            <div class="lectura-titulo">El poder y sus disfraces — Guía de presentación</div>
+          </div>
+          <span class="lectura-arrow">→</span>
+        </a>
+      </div>
+
+      <div class="proximamente">
+        <span>📅</span> Próximas clases se irán agregando aquí
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CURSO 2: TEORÍA ANTROPOLÓGICA -->
+  <div class="curso">
+    <div class="curso-header" onclick="toggleCurso('teoria')">
+      <span class="curso-emoji">🌀</span>
+      <span class="curso-nombre">Teoría Antropológica Contemporánea I</span>
+      <span class="curso-toggle" id="toggle-teoria">▼</span>
+    </div>
+    <div class="curso-body" id="body-teoria" style="display:none;">
+      <div class="proximamente">
+        <span>📅</span> Las lecturas de este curso se irán agregando aquí
+      </div>
+    </div>
+  </div>
+
+  <!-- CURSO 3: RELACIONES HUMANO-ANIMAL -->
+  <div class="curso">
+    <div class="curso-header" onclick="toggleCurso('animal')">
+      <span class="curso-emoji">🐾</span>
+      <span class="curso-nombre">Antropología y Relaciones Humano-Animal</span>
+      <span class="curso-toggle" id="toggle-animal">▼</span>
+    </div>
+    <div class="curso-body" id="body-animal" style="display:none;">
+      <div class="proximamente">
+        <span>📅</span> Las lecturas de este curso se irán agregando aquí
+      </div>
+    </div>
+  </div>
+
+  <!-- CURSO 4: DISEÑO Y ÉTICA -->
+  <div class="curso">
+    <div class="curso-header" onclick="toggleCurso('diseno')">
+      <span class="curso-emoji">🔬</span>
+      <span class="curso-nombre">Diseño y Ética de la Investigación Antropológica</span>
+      <span class="curso-toggle" id="toggle-diseno">▼</span>
+    </div>
+    <div class="curso-body" id="body-diseno" style="display:none;">
+      <div class="proximamente">
+        <span>📅</span> Las lecturas de este curso se irán agregando aquí
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Wiki académica personal · Andrea Tapia Urra · 2026
+</footer>
+
+<script>
+  function toggleCurso(id) {
+    const body = document.getElementById('body-' + id);
+    const toggle = document.getElementById('toggle-' + id);
+    if (body.style.display === 'none') {
+      body.style.display = 'block';
+      toggle.classList.add('open');
+    } else {
+      body.style.display = 'none';
+      toggle.classList.remove('open');
+    }
+  }
+</script>
+
+</body>
+</html>
