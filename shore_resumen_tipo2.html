@@ -311,5 +311,38 @@
   </footer>
 
 </div>
+
+  <!-- SECCIÓN DE ANOTACIONES -->
+  <div class="container" style="margin-top: 3rem;">
+  <div style="padding: 2rem; background: #fffdf5; border: 1.5px solid #e0ddd6; border-radius: 12px; margin-bottom: 3rem;">
+    <div style="font-family: Spectral, serif; font-size: 1.1rem; font-weight: 600; color: #1a1814; margin-bottom: 0.5rem;">📝 Mis anotaciones</div>
+    <div style="font-size: 0.8rem; color: #5a5650; margin-bottom: 1rem;">Tus notas se guardan automáticamente en este navegador.</div>
+    <textarea id="notas" placeholder="Escribe aquí tus reflexiones, preguntas, conexiones con otros textos..." style="width:100%; min-height:220px; padding:1rem; font-family: Spectral, serif; font-size:0.95rem; border: 1px solid #e0ddd6; border-radius:8px; background:#ffffff; color:#1a1814; resize:vertical; line-height:1.7; box-sizing:border-box;"></textarea>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.75rem;">
+      <span id="status" style="font-size:0.75rem; color:#5a5650;"></span>
+      <button onclick="borrarNotas()" style="font-size:0.75rem; color:#c0392b; background:none; border:none; cursor:pointer; padding:4px 8px;">Borrar notas</button>
+    </div>
+  </div>
+  </div>
+  <script>
+    const KEY = "notas_shore_politica_publica";
+    const ta = document.getElementById("notas");
+    const status = document.getElementById("status");
+    const saved = localStorage.getItem(KEY);
+    if (saved) { ta.value = saved; status.textContent = "Notas cargadas ✓"; }
+    ta.addEventListener("input", () => {
+      localStorage.setItem(KEY, ta.value);
+      status.textContent = "Guardado ✓";
+      setTimeout(() => status.textContent = "", 2000);
+    });
+    function borrarNotas() {
+      if (confirm("¿Segura que quieres borrar todas tus notas?")) {
+        localStorage.removeItem(KEY);
+        ta.value = "";
+        status.textContent = "Notas borradas";
+      }
+    }
+  </script>
+
 </body>
 </html>
