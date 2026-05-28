@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wiki Académica — Andrea Tapia Urra</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f4f1eb;
+    --surface: #ffffff;
+    --surface2: #f9f7f3;
+    --text: #1c1a16;
+    --text2: #5c5850;
+    --text3: #9c988e;
+    --border: #e2ddd6;
+    --border2: #ccc8c0;
+    --accent: #2c4a8a;
+    --accent-bg: #eef2fa;
+    --danger: #a83232;
+    --danger-bg: #faeaea;
+    --success: #2a6e4a;
+  }
+
+  body {
+    font-family: 'Spectral', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── LAYOUT ── */
+  .layout { display: flex; min-height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: var(--text);
+    color: #e8e4db;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 10;
+  }
+
+  .sidebar-header {
+    padding: 2rem 1.5rem 1.5rem;
+    border-bottom: 0.5px solid #2e2c28;
+  }
+
+  .sidebar-title {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+  }
+
+  .sidebar-sub {
+    font-size: 0.72rem;
+    color: #6e6a60;
+    font-style: italic;
+  }
+
+  .sidebar-nav { padding: 1rem 0; flex: 1; }
+
+  .nav-section {
+    padding: 0.5rem 1.5rem 0.25rem;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #4e4a42;
+  }
+
+  .curso-item { cursor: pointer; }
+
+  .curso-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 1.5rem;
+    font-size: 0.85rem;
+    color: #c8c4ba;
+    transition: background 0.15s, color 0.15s;
+    cursor: pointer;
+  }
+
+  .curso-label:hover { background: #252320; color: #e8e4db; }
+  .curso-label.active { background: #1e1c18; color: #f0ece4; }
+
+  .curso-label .emoji { font-size: 0.9rem; flex-shrink: 0; }
+  .curso-label .nombre { flex: 1; line-height: 1.3; }
+  .curso-label .chevron { font-size: 0.65rem; color: #4e4a42; transition: transform 0.2s; }
+  .curso-label .chevron.open { transform: rotate(90deg); }
+
+  .clases-list { display: none; }
+  .clases-list.open { display: block; }
+
+  .clase-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 1.5rem 6px 2.75rem;
+    font-size: 0.78rem;
+    color: #7e7a70;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .clase-item:hover { background: #252320; color: #c8c4ba; }
+  .clase-item.active { color: #e8e4db; background: #1e1c18; }
+
+  .sidebar-footer {
+    padding: 1rem 1.5rem;
+    border-top: 0.5px solid #2e2c28;
+  }
+
+  .btn-add-curso {
+    width: 100%;
+    padding: 8px;
+    background: #252320;
+    border: 0.5px solid #3e3a32;
+    border-radius: 6px;
+    color: #9c988e;
+    font-family: 'Spectral', serif;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .btn-add-curso:hover { background: #2e2c28; color: #c8c4ba; }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: 280px;
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  /* ── VIEWS ── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* HOME VIEW */
+  .home-hero {
+    background: var(--text);
+    color: #e8e4db;
+    padding: 4rem 3rem 3rem;
+  }
+
+  .home-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+  }
+
+  .home-hero p {
+    font-size: 1rem;
+    color: #6e6a60;
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  .home-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .home-tag {
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 0.5px solid #3e3a32;
+    color: #7e7a70;
+  }
+
+  .home-content { padding: 2.5rem 3rem; }
+
+  .home-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .curso-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .curso-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .curso-card-emoji { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .curso-card-nombre { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+  .curso-card-meta { font-size: 0.75rem; color: var(--text3); }
+
+  /* CURSO VIEW */
+  .view-header {
+    padding: 2.5rem 3rem 2rem;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .view-header-emoji { font-size: 2rem; }
+
+  .view-header-info { flex: 1; }
+
+  .view-header h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .view-header p { font-size: 0.85rem; color: var(--text2); }
+
+  .view-header-actions { display: flex; gap: 8px; align-items: center; }
+
+  .view-body { padding: 2rem 3rem; }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .clase-block { margin-bottom: 2rem; }
+
+  .clase-block-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.75rem;
+  }
+
+  .clase-block-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text2);
+    flex: 1;
+  }
+
+  .texto-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .texto-item:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+    transform: translateX(3px);
+  }
+
+  .texto-icon { font-size: 1.1rem; flex-shrink: 0; }
+  .texto-info { flex: 1; }
+  .texto-autor { font-size: 0.72rem; color: var(--text3); font-style: italic; margin-bottom: 2px; }
+  .texto-titulo { font-size: 0.9rem; }
+  .texto-arrow { font-size: 0.8rem; color: var(--text3); }
+
+  /* TEXTO VIEW */
+  .texto-view-header {
+    padding: 2rem 3rem 1.5rem;
+    background: var(--surface);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    color: var(--text3);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .breadcrumb span { cursor: pointer; }
+  .breadcrumb span:hover { color: var(--text); }
+
+  .texto-view-titulo { font-size: 1.4rem; font-weight: 600; margin-bottom: 4px; }
+  .texto-view-autor { font-size: 0.85rem; color: var(--text2); font-style: italic; }
+
+  .texto-view-body { padding: 2rem 3rem; }
+
+  .html-frame {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .html-frame iframe {
+    width: 100%;
+    min-height: 600px;
+    border: none;
+    display: block;
+  }
+
+  .html-placeholder {
+    padding: 3rem;
+    text-align: center;
+    color: var(--text3);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+  .anotaciones-block {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .anotaciones-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .anotaciones-sub {
+    font-size: 0.72rem;
+    color: var(--text3);
+    margin-bottom: 1rem;
+  }
+
+  .anotaciones-textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 1rem;
+    font-family: 'Spectral', serif;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--text);
+    resize: vertical;
+    transition: border-color 0.15s;
+  }
+
+  .anotaciones-textarea:focus {
+    outline: none;
+    border-color: var(--border2);
+  }
+
+  .anotaciones-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+  }
+
+  .save-status { font-size: 0.72rem; color: var(--success); font-family: 'DM Mono', monospace; }
+
+  /* BOTONES */
+  .btn {
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-family: 'Spectral', serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border: 0.5px solid transparent;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text2);
+    border-color: var(--border);
+  }
+
+  .btn-secondary:hover { border-color: var(--border2); color: var(--text); }
+
+  .btn-ghost {
+    background: none;
+    color: var(--text3);
+    border-color: transparent;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+
+  .btn-ghost:hover { color: var(--danger); }
+
+  .btn-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border-color: #e8c0c0;
+  }
+
+  .btn-danger:hover { background: #f5d8d8; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    display: none;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+
+  .modal h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; }
+
+  .field { margin-bottom: 1rem; }
+
+  .field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 5px;
+    letter-spacing: 0.04em;
+  }
+
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 9px 12px;
+    font-family: 'Spectral', serif;
+    font-size: 0.9rem;
+    border: 0.5px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface2);
+    color: var(--text);
+    transition: border-color 0.15s;
+  }
+
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .field textarea { min-height: 80px; resize: vertical; line-height: 1.6; }
+
+  .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1.5rem; }
+
+  .emoji-picker {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .emoji-opt {
+    font-size: 1.2rem;
+    padding: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    border: 0.5px solid transparent;
+    transition: all 0.1s;
+  }
+
+  .emoji-opt:hover { background: var(--accent-bg); border-color: var(--accent); }
+  .emoji-opt.selected { background: var(--accent-bg); border-color: var(--accent); }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text3);
+    font-style: italic;
+  }
+
+  .empty p { margin-bottom: 1rem; font-size: 0.9rem; }
+
+  /* UPLOAD ZONE */
+  .upload-zone {
+    border: 1.5px dashed var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 6px;
+  }
+
+  .upload-zone:hover { border-color: var(--accent); background: var(--accent-bg); }
+  .upload-zone p { font-size: 0.8rem; color: var(--text3); margin-top: 4px; }
+  .upload-zone input { display: none; }
+
+  .upload-ok { font-size: 0.78rem; color: var(--success); margin-top: 6px; font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Wiki Académica</div>
+      <div class="sidebar-sub">Andrea Tapia Urra · Doctorado Antropología</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">Navegación</div>
+      <div class="curso-label" onclick="showHome()" id="nav-home" style="color:#e8e4db; font-weight:500;">
+        <span class="emoji">🏠</span>
+        <span class="nombre">Inicio</span>
+      </div>
+      <div class="curso-label" onclick="showAnotaciones()" id="nav-anotaciones" style="color:#c8c4ba;">
+        <span class="emoji">📓</span>
+        <span class="nombre">Mis anotaciones</span>
+      </div>
+
+      <div class="nav-section" style="margin-top:1rem;">Cursos</div>
+      <div id="nav-cursos"></div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-add-curso" onclick="openModalCurso()">+ Agregar curso</button>
+      <div style="display:flex; gap:6px; margin-top:8px;">
+        <button class="btn-add-curso" onclick="exportarDatos()" style="flex:1;">⬇ Exportar datos</button>
+        <button class="btn-add-curso" onclick="document.getElementById('import-input').click()" style="flex:1;">⬆ Importar</button>
+        <input type="file" id="import-input" accept=".json" style="display:none;" onchange="importarDatos(this)">
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HOME VIEW -->
+    <div class="view active" id="view-home">
+      <div class="home-hero">
+        <h1>Wiki Académica</h1>
+        <p>Doctorado en Antropología · PUC · 2026</p>
+        <div class="home-tags">
+          <span class="home-tag">Intervención socioambiental</span>
+          <span class="home-tag">Dispositivos estatales</span>
+          <span class="home-tag">Cultura-naturaleza</span>
+          <span class="home-tag">Territorio</span>
+        </div>
+      </div>
+      <div class="home-content">
+        <div class="section-label">📚 Mis cursos</div>
+        <div class="home-grid" id="home-grid"></div>
+        <div id="home-empty" class="empty" style="display:none;">
+          <p>Aún no tienes cursos. Agrega tu primero desde el panel izquierdo.</p>
+          <button class="btn btn-primary" onclick="openModalCurso()">+ Agregar primer curso</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CURSO VIEW -->
+    <div class="view" id="view-curso">
+      <div class="view-header">
+        <div class="view-header-emoji" id="curso-emoji-display">🏛️</div>
+        <div class="view-header-info">
+          <h2 id="curso-nombre-display"></h2>
+          <p id="curso-clases-count"></p>
+        </div>
+        <div class="view-header-actions">
+          <button class="btn btn-secondary" onclick="openModalEditCurso()">✏️ Editar</button>
+          <button class="btn btn-primary" onclick="openModalClase()">+ Clase</button>
+          <button class="btn btn-ghost" onclick="deleteCursoConfirm()">Eliminar curso</button>
+        </div>
+      </div>
+      <div class="view-body">
+        <div class="section-label">Clases y lecturas</div>
+        <div id="clases-container"></div>
+        <div id="clases-empty" class="empty" style="display:none;">
+          <p>Este curso no tiene clases aún.</p>
+          <button class="btn btn-primary" onclick="openModalClase()">+ Agregar primera clase</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEXTO VIEW -->
+    <div class="view" id="view-texto">
+      <div class="texto-view-header">
+        <div class="breadcrumb" id="breadcrumb"></div>
+        <div class="texto-view-titulo" id="texto-titulo-display"></div>
+        <div class="texto-view-autor" id="texto-autor-display"></div>
+      </div>
+      <div class="texto-view-body">
+        <div class="html-frame" id="html-frame">
+          <div class="html-placeholder">Este texto no tiene un HTML asociado aún.</div>
+        </div>
+        <div class="anotaciones-block">
+          <div class="anotaciones-title">📝 Mis anotaciones</div>
+          <div class="anotaciones-sub">Se guardan automáticamente en este navegador.</div>
+          <textarea class="anotaciones-textarea" id="anotaciones-textarea" placeholder="Escribe aquí tus reflexiones, preguntas, conexiones con otros textos..."></textarea>
+          <div class="anotaciones-footer">
+            <span class="save-status" id="save-status"></span>
+            <button class="btn btn-ghost" onclick="borrarAnotaciones()">Borrar notas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- ANOTACIONES VIEW -->
+    <div class="view" id="view-anotaciones">
+      <div class="home-hero">
+        <h1>📓 Mis anotaciones</h1>
+        <p>Todas tus notas organizadas por curso y texto</p>
+      </div>
+      <div class="home-content">
+        <div class="section-label" style="display:flex; align-items:center; justify-content:space-between;">
+          <span>Anotaciones por texto</span>
+          <button class="btn btn-primary" onclick="exportarAnotacionesPDF()" style="font-size:0.75rem;">⬇ Descargar PDF</button>
+        </div>
+        <div id="anotaciones-global"></div>
+        <div id="anotaciones-empty" class="empty" style="display:none;">
+          <p>Aún no tienes anotaciones. Empieza a escribir en cualquier texto.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL CURSO -->
+<div class="modal-overlay" id="modal-curso">
+  <div class="modal">
+    <h3>Nuevo curso</h3>
+    <div class="field">
+      <label>Nombre del curso</label>
+      <input type="text" id="input-curso-nombre" placeholder="Ej: Antropología del Estado">
+    </div>
+    <div class="field">
+      <label>Ícono</label>
+      <div class="emoji-picker" id="emoji-picker">
+        <span class="emoji-opt selected" onclick="selectEmoji(this)">🏛️</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🌀</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🐾</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🔬</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">📚</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🌿</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">⚖️</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🗺️</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🧠</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🌍</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">📖</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">✍️</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🔭</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🧩</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">🌱</span>
+        <span class="emoji-opt" onclick="selectEmoji(this)">⚡</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-curso')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCurso()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT CURSO -->
+<div class="modal-overlay" id="modal-edit-curso">
+  <div class="modal">
+    <h3>Editar curso</h3>
+    <div class="field">
+      <label>Nombre del curso</label>
+      <input type="text" id="input-edit-curso-nombre" placeholder="Nombre del curso">
+    </div>
+    <div class="field">
+      <label>Ícono</label>
+      <div class="emoji-picker" id="emoji-picker-edit">
+        <span class="emoji-opt selected" onclick="selectEmojiEdit(this)">🏛️</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🌀</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🐾</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🔬</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">📚</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🌿</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">⚖️</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🗺️</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🧠</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🌍</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">📖</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">✍️</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🔭</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🧩</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">🌱</span>
+        <span class="emoji-opt" onclick="selectEmojiEdit(this)">⚡</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-edit-curso')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEditCurso()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT CLASE -->
+<div class="modal-overlay" id="modal-edit-clase">
+  <div class="modal">
+    <h3>Editar clase</h3>
+    <div class="field">
+      <label>Nombre de la clase</label>
+      <input type="text" id="input-edit-clase-nombre" placeholder="Nombre de la clase">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-edit-clase')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEditClase()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT TEXTO -->
+<div class="modal-overlay" id="modal-edit-texto">
+  <div class="modal">
+    <h3>Editar texto</h3>
+    <div class="field">
+      <label>Autor</label>
+      <input type="text" id="input-edit-texto-autor" placeholder="Autor">
+    </div>
+    <div class="field">
+      <label>Título</label>
+      <input type="text" id="input-edit-texto-titulo" placeholder="Título">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-edit-texto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEditTexto()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REPLACE HTML -->
+<div class="modal-overlay" id="modal-replace-html">
+  <div class="modal">
+    <h3>Reemplazar HTML</h3>
+    <p style="font-size:0.85rem; color:var(--text2); margin-bottom:1rem;">El autor, título y anotaciones se mantendrán intactos.</p>
+    <div class="field">
+      <label>Nuevo archivo HTML</label>
+      <div class="upload-zone" onclick="document.getElementById('input-replace-html-file').click()">
+        <div>📄 Haz clic para subir el nuevo HTML</div>
+        <p>Reemplazará el HTML actual sin borrar tus notas</p>
+        <input type="file" id="input-replace-html-file" accept=".html" onchange="handleReplaceHTMLUpload(this)">
+      </div>
+      <div class="upload-ok" id="replace-upload-ok" style="display:none;"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-replace-html')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveReplaceHTML()">Reemplazar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CLASE -->
+<div class="modal-overlay" id="modal-clase">
+  <div class="modal">
+    <h3>Nueva clase</h3>
+    <div class="field">
+      <label>Nombre de la clase</label>
+      <input type="text" id="input-clase-nombre" placeholder="Ej: Clase 4 · 27 de Mayo">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-clase')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveClase()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL TEXTO -->
+<div class="modal-overlay" id="modal-texto">
+  <div class="modal">
+    <h3>Agregar texto</h3>
+    <div class="field">
+      <label>Autor</label>
+      <input type="text" id="input-texto-autor" placeholder="Ej: Gledhill, J.">
+    </div>
+    <div class="field">
+      <label>Título</label>
+      <input type="text" id="input-texto-titulo" placeholder="Ej: El poder y sus disfraces">
+    </div>
+    <div class="field">
+      <label>Archivo HTML del resumen (opcional)</label>
+      <div class="upload-zone" onclick="document.getElementById('input-html-file').click()">
+        <div>📄 Haz clic para subir tu HTML</div>
+        <p>Sube el archivo HTML del resumen generado</p>
+        <input type="file" id="input-html-file" accept=".html" onchange="handleHTMLUpload(this)">
+      </div>
+      <div class="upload-ok" id="upload-ok" style="display:none;"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-texto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveTexto()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── ESTADO ──
+let state = JSON.parse(localStorage.getItem('wiki_academica') || '{"cursos":[]}');
+let currentCursoId = null;
+let currentClaseId = null;
+let currentTextoId = null;
+let selectedEmoji = '🏛️';
+let currentClaseTarget = null;
+let uploadedHTML = null;
+let uploadedHTMLName = '';
+
+// ── GUARDAR ──
+function save() {
+  localStorage.setItem('wiki_academica', JSON.stringify(state));
+}
+
+// ── IDs ──
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+// ── RENDER SIDEBAR ──
+function renderSidebar() {
+  const nav = document.getElementById('nav-cursos');
+  nav.innerHTML = '';
+  state.cursos.forEach(curso => {
+    const item = document.createElement('div');
+    item.className = 'curso-item';
+    item.innerHTML = `
+      <div class="curso-label ${currentCursoId === curso.id ? 'active' : ''}" onclick="toggleCursoNav('${curso.id}')">
+        <span class="emoji">${curso.emoji}</span>
+        <span class="nombre">${curso.nombre}</span>
+        <span class="chevron ${currentCursoId === curso.id ? 'open' : ''}">▶</span>
+      </div>
+      <div class="clases-list ${currentCursoId === curso.id ? 'open' : ''}" id="clases-nav-${curso.id}">
+        ${(curso.clases||[]).map(cl => `
+          <div class="clase-item ${currentClaseId === cl.id ? 'active' : ''}" onclick="showCurso('${curso.id}')">
+            ➡️ ${cl.nombre}
+          </div>
+        `).join('')}
+      </div>
+    `;
+    nav.appendChild(item);
+  });
+}
+
+// ── HOME ──
+function showHome() {
+  setActiveView('view-home');
+  currentCursoId = null;
+  currentClaseId = null;
+  currentTextoId = null;
+  renderHome();
+  renderSidebar();
+}
+
+function renderHome() {
+  const grid = document.getElementById('home-grid');
+  const empty = document.getElementById('home-empty');
+  grid.innerHTML = '';
+  if (state.cursos.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  state.cursos.forEach(curso => {
+    const totalTextos = (curso.clases||[]).reduce((a, cl) => a + (cl.textos||[]).length, 0);
+    const card = document.createElement('div');
+    card.className = 'curso-card';
+    card.onclick = () => showCurso(curso.id);
+    card.innerHTML = `
+      <div class="curso-card-emoji">${curso.emoji}</div>
+      <div class="curso-card-nombre">${curso.nombre}</div>
+      <div class="curso-card-meta">${(curso.clases||[]).length} clases · ${totalTextos} textos</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ── CURSO VIEW ──
+function showCurso(cursoId) {
+  currentCursoId = cursoId;
+  currentClaseId = null;
+  currentTextoId = null;
+  setActiveView('view-curso');
+  const curso = state.cursos.find(c => c.id === cursoId);
+  if (!curso) return;
+  document.getElementById('curso-emoji-display').textContent = curso.emoji;
+  document.getElementById('curso-nombre-display').textContent = curso.nombre;
+  document.getElementById('curso-clases-count').textContent = `${(curso.clases||[]).length} clases`;
+  renderClases(curso);
+  renderSidebar();
+}
+
+function renderClases(curso) {
+  const container = document.getElementById('clases-container');
+  const empty = document.getElementById('clases-empty');
+  container.innerHTML = '';
+  if (!curso.clases || curso.clases.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  curso.clases.forEach(clase => {
+    const block = document.createElement('div');
+    block.className = 'clase-block';
+    const textos = (clase.textos||[]).map(t => `
+      <div class="texto-item" onclick="showTexto('${curso.id}','${clase.id}','${t.id}')">
+        <span class="texto-icon">📖</span>
+        <div class="texto-info">
+          <div class="texto-autor">${t.autor}</div>
+          <div class="texto-titulo">${t.titulo}</div>
+        </div>
+        <div style="display:flex;gap:4px;flex-shrink:0;" onclick="event.stopPropagation()">
+          <button class="btn btn-ghost" title="Editar" onclick="openModalEditTexto('${curso.id}','${clase.id}','${t.id}')" style="padding:3px 7px;">✏️</button>
+          <button class="btn btn-ghost" title="Reemplazar HTML" onclick="openModalReplaceHTML('${curso.id}','${clase.id}','${t.id}')" style="padding:3px 7px;">📄</button>
+          <button class="btn btn-ghost" title="Eliminar texto" onclick="deleteTexto('${curso.id}','${clase.id}','${t.id}')" style="padding:3px 7px; color:var(--danger);">✕</button>
+        </div>
+      </div>
+    `).join('');
+    const notaKey = 'nota_clase_' + clase.id;
+    const notaGuardada = localStorage.getItem(notaKey) || '';
+    block.innerHTML = `
+      <div class="clase-block-header">
+        <div class="clase-block-title">➡️ ${clase.nombre}</div>
+        <button class="btn btn-secondary" style="font-size:0.75rem; padding:5px 10px;" onclick="openModalTexto('${clase.id}')">+ Texto</button>
+        <button class="btn btn-secondary" style="font-size:0.75rem; padding:5px 10px;" onclick="toggleLibreta('${clase.id}')">📓 Libreta</button>
+        <button class="btn btn-ghost" style="padding:4px 8px;" onclick="openModalEditClase('${clase.id}')">✏️</button>
+        <button class="btn btn-ghost" onclick="deleteClase('${clase.id}')">✕</button>
+      </div>
+      ${textos || '<div style="font-size:0.8rem; color:var(--text3); font-style:italic; padding:8px 0;">Sin textos aún</div>'}
+      <div id="libreta-${clase.id}" style="display:none; margin-top:12px; background:var(--surface2); border:0.5px solid var(--border); border-radius:8px; padding:1rem;">
+        <div style="font-size:0.72rem; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">📓 Libreta de la clase</div>
+        <textarea id="libreta-ta-${clase.id}" placeholder="Apuntes generales de la clase, discusiones, reflexiones..." style="width:100%; min-height:140px; padding:0.75rem; font-family:Spectral,serif; font-size:0.88rem; line-height:1.75; border:0.5px solid var(--border); border-radius:6px; background:var(--surface); color:var(--text); resize:vertical; box-sizing:border-box;">${notaGuardada}</textarea>
+        <div style="display:flex; justify-content:space-between; margin-top:6px;">
+          <span id="libreta-status-${clase.id}" style="font-size:0.7rem; color:var(--success);"></span>
+          <button onclick="borrarLibreta('${clase.id}')" style="font-size:0.7rem; color:var(--danger); background:none; border:none; cursor:pointer;">Borrar libreta</button>
+        </div>
+      </div>
+    `;
+    setTimeout(() => {
+      const ta = document.getElementById('libreta-ta-' + clase.id);
+      if (ta) {
+        ta.addEventListener('input', () => {
+          localStorage.setItem('nota_clase_' + clase.id, ta.value);
+          const st = document.getElementById('libreta-status-' + clase.id);
+          if (st) { st.textContent = 'Guardado ✓'; setTimeout(() => st.textContent = '', 2000); }
+        });
+      }
+    }, 100);
+    container.appendChild(block);
+  });
+}
+
+// ── TEXTO VIEW ──
+function showTexto(cursoId, claseId, textoId) {
+  currentCursoId = cursoId;
+  currentClaseId = claseId;
+  currentTextoId = textoId;
+  setActiveView('view-texto');
+
+  const curso = state.cursos.find(c => c.id === cursoId);
+  const clase = curso.clases.find(cl => cl.id === claseId);
+  const texto = clase.textos.find(t => t.id === textoId);
+
+  document.getElementById('breadcrumb').innerHTML = `
+    <span onclick="showHome()">🏠 Inicio</span> ›
+    <span onclick="showCurso('${cursoId}')">${curso.emoji} ${curso.nombre}</span> ›
+    <span onclick="showCurso('${cursoId}')">${clase.nombre}</span> ›
+    <span style="color:var(--text2)">${texto.titulo}</span>
+  `;
+
+  document.getElementById('texto-titulo-display').textContent = texto.titulo;
+  document.getElementById('texto-autor-display').textContent = texto.autor;
+
+  // HTML frame
+  const frame = document.getElementById('html-frame');
+  if (texto.html) {
+    frame.innerHTML = `<iframe srcdoc="${escapeHtml(texto.html)}" sandbox="allow-scripts allow-same-origin"></iframe>`;
+  } else {
+    frame.innerHTML = `<div class="html-placeholder">Este texto no tiene un HTML asociado. Puedes editarlo para agregar uno.</div>`;
+  }
+
+  // Anotaciones
+  const key = `nota_${textoId}`;
+  const ta = document.getElementById('anotaciones-textarea');
+  ta.value = localStorage.getItem(key) || '';
+  document.getElementById('save-status').textContent = '';
+
+  ta.oninput = () => {
+    localStorage.setItem(key, ta.value);
+    const s = document.getElementById('save-status');
+    s.textContent = 'Guardado ✓';
+    setTimeout(() => s.textContent = '', 2000);
+  };
+
+  renderSidebar();
+}
+
+function escapeHtml(str) {
+  return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function borrarAnotaciones() {
+  if (!currentTextoId) return;
+  if (confirm('¿Borrar todas las anotaciones de este texto?')) {
+    localStorage.removeItem(`nota_${currentTextoId}`);
+    document.getElementById('anotaciones-textarea').value = '';
+    document.getElementById('save-status').textContent = 'Notas borradas';
+  }
+}
+
+// ── MODALES ──
+function openModalCurso() {
+  document.getElementById('input-curso-nombre').value = '';
+  selectedEmoji = '🏛️';
+  document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+  document.querySelector('.emoji-opt').classList.add('selected');
+  openModal('modal-curso');
+}
+
+function openModalClase() {
+  document.getElementById('input-clase-nombre').value = '';
+  openModal('modal-clase');
+}
+
+function openModalTexto(claseId) {
+  currentClaseTarget = claseId;
+  document.getElementById('input-texto-autor').value = '';
+  document.getElementById('input-texto-titulo').value = '';
+  document.getElementById('upload-ok').style.display = 'none';
+  uploadedHTML = null;
+  uploadedHTMLName = '';
+  openModal('modal-texto');
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function selectEmoji(el) {
+  document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedEmoji = el.textContent;
+}
+
+// ── GUARDAR CURSO ──
+function saveCurso() {
+  const nombre = document.getElementById('input-curso-nombre').value.trim();
+  if (!nombre) return alert('Escribe un nombre para el curso.');
+  state.cursos.push({ id: uid(), nombre, emoji: selectedEmoji, clases: [] });
+  save();
+  closeModal('modal-curso');
+  renderHome();
+  renderSidebar();
+}
+
+// ── GUARDAR CLASE ──
+function saveClase() {
+  const nombre = document.getElementById('input-clase-nombre').value.trim();
+  if (!nombre) return alert('Escribe un nombre para la clase.');
+  const curso = state.cursos.find(c => c.id === currentCursoId);
+  if (!curso) return;
+  if (!curso.clases) curso.clases = [];
+  curso.clases.push({ id: uid(), nombre, textos: [] });
+  save();
+  closeModal('modal-clase');
+  showCurso(currentCursoId);
+}
+
+// ── SUBIR HTML ──
+function handleHTMLUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    uploadedHTML = e.target.result;
+    uploadedHTMLName = file.name;
+    const ok = document.getElementById('upload-ok');
+    ok.style.display = 'block';
+    ok.textContent = '✓ ' + file.name + ' cargado';
+  };
+  reader.readAsText(file);
+}
+
+// ── GUARDAR TEXTO ──
+function saveTexto() {
+  const autor = document.getElementById('input-texto-autor').value.trim();
+  const titulo = document.getElementById('input-texto-titulo').value.trim();
+  if (!titulo) return alert('Escribe un título.');
+  const curso = state.cursos.find(c => c.id === currentCursoId);
+  const clase = curso.clases.find(cl => cl.id === currentClaseTarget);
+  if (!clase.textos) clase.textos = [];
+  clase.textos.push({ id: uid(), autor, titulo, html: uploadedHTML || '' });
+  save();
+  closeModal('modal-texto');
+  showCurso(currentCursoId);
+}
+
+// ── ELIMINAR ──
+function deleteCursoConfirm() {
+  if (!confirm('¿Eliminar este curso y todas sus clases y textos?')) return;
+  state.cursos = state.cursos.filter(c => c.id !== currentCursoId);
+  save();
+  showHome();
+}
+
+function deleteClase(claseId) {
+  if (!confirm('¿Eliminar esta clase y todos sus textos?')) return;
+  const curso = state.cursos.find(c => c.id === currentCursoId);
+  curso.clases = curso.clases.filter(cl => cl.id !== claseId);
+  save();
+  showCurso(currentCursoId);
+}
+
+// ── VISTAS ──
+function setActiveView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function toggleCursoNav(cursoId) {
+  if (currentCursoId === cursoId) {
+    showHome();
+  } else {
+    showCurso(cursoId);
+  }
+}
+
+// ── CERRAR MODAL CON ESC ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+});
+
+// ── EXPORTAR ──
+function exportarDatos() {
+  // Incluir también todas las anotaciones del localStorage
+  const anotaciones = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('nota_')) {
+      anotaciones[key] = localStorage.getItem(key);
+    }
+  }
+  const backup = { cursos: state.cursos, anotaciones, fecha: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'wiki_academica_backup_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+}
+
+// ── IMPORTAR ──
+function importarDatos(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const backup = JSON.parse(e.target.result);
+      if (!backup.cursos) return alert('Archivo inválido.');
+      if (!confirm('¿Importar datos? Esto reemplazará tu contenido actual.')) return;
+      state.cursos = backup.cursos;
+      save();
+      // Restaurar anotaciones
+      if (backup.anotaciones) {
+        Object.entries(backup.anotaciones).forEach(([key, val]) => {
+          localStorage.setItem(key, val);
+        });
+      }
+      showHome();
+      alert('✅ Datos importados correctamente.');
+    } catch {
+      alert('Error al leer el archivo. Asegúrate de que sea un backup válido.');
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+// ── ANOTACIONES GLOBAL ──
+function showAnotaciones() {
+  setActiveView('view-anotaciones');
+  currentCursoId = null;
+  currentClaseId = null;
+  currentTextoId = null;
+  renderAnotacionesGlobal();
+  renderSidebar();
+}
+
+function renderAnotacionesGlobal() {
+  const container = document.getElementById('anotaciones-global');
+  const empty = document.getElementById('anotaciones-empty');
+  container.innerHTML = '';
+  let total = 0;
+
+  // Primero libretas de clase
+  state.cursos.forEach(curso => {
+    (curso.clases || []).forEach(clase => {
+      const key = 'nota_clase_' + clase.id;
+      const nota = localStorage.getItem(key);
+      if (!nota || !nota.trim()) return;
+      total++;
+      const block = document.createElement('div');
+      block.style.cssText = 'background:var(--surface); border:0.5px solid var(--border); border-left:3px solid #8a6a2c; border-radius:10px; padding:1.5rem; margin-bottom:1rem;';
+      const header = '<div style="font-size:0.7rem; color:var(--text3); margin-bottom:6px;">' + curso.emoji + ' ' + curso.nombre + '</div>';
+      const titulo = '<div style="font-size:1rem; font-weight:600; margin-bottom:12px;">📓 Libreta — ' + clase.nombre + '</div>';
+      const cuerpo = '<div style="font-size:0.88rem; line-height:1.75; color:var(--text2); white-space:pre-wrap; background:var(--surface2); padding:1rem; border-radius:8px;">' + nota.trim() + '</div>';
+      block.innerHTML = header + titulo + cuerpo;
+      container.appendChild(block);
+    });
+  });
+
+  // Luego anotaciones de textos
+  state.cursos.forEach(curso => {
+    (curso.clases || []).forEach(clase => {
+      (clase.textos || []).forEach(texto => {
+        const key = 'nota_' + texto.id;
+        const nota = localStorage.getItem(key);
+        if (!nota || !nota.trim()) return;
+        total++;
+
+        const block = document.createElement('div');
+        block.style.cssText = 'background:var(--surface); border:0.5px solid var(--border); border-radius:10px; padding:1.5rem; margin-bottom:1rem;';
+        block.innerHTML = `
+          <div style="font-size:0.7rem; color:var(--text3); margin-bottom:6px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span>${curso.emoji} ${curso.nombre}</span>
+            <span style="color:var(--border2)">›</span>
+            <span>${clase.nombre}</span>
+          </div>
+          <div style="font-size:1rem; font-weight:600; margin-bottom:12px; cursor:pointer; color:var(--accent);" onclick="showTexto('${curso.id}','${clase.id}','${texto.id}')">
+            ${texto.autor ? texto.autor + ' — ' : ''}${texto.titulo} ↗
+          </div>
+          <div style="font-size:0.88rem; line-height:1.75; color:var(--text2); white-space:pre-wrap; background:var(--surface2); padding:1rem; border-radius:8px; border:0.5px solid var(--border);">${nota.trim()}</div>
+        `;
+        container.appendChild(block);
+      });
+    });
+  });
+
+  if (total === 0) {
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+  }
+}
+
+// ── EXPORTAR ANOTACIONES PDF ──
+function exportarAnotacionesPDF() {
+  let html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  body { font-family: Georgia, serif; color: #1a1814; max-width: 700px; margin: 0 auto; padding: 3rem 2rem; }
+  h1 { font-size: 1.6rem; font-weight: 300; margin-bottom: 4px; }
+  .meta { font-size: 0.8rem; color: #888; font-style: italic; margin-bottom: 3rem; border-bottom: 0.5px solid #e0ddd6; padding-bottom: 1rem; }
+  .entrada { margin-bottom: 2.5rem; page-break-inside: avoid; }
+  .curso-tag { font-size: 0.7rem; color: #888; margin-bottom: 4px; }
+  .texto-titulo { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #1a1814; }
+  .nota { font-size: 0.9rem; line-height: 1.8; color: #3a3630; background: #f9f7f3; padding: 1rem 1.25rem; border-radius: 6px; border-left: 2px solid #b4b2a9; white-space: pre-wrap; }
+  .divider { border: none; border-top: 0.5px solid #e0ddd6; margin: 2rem 0; }
+  @media print { body { padding: 1rem; } }
+</style>
+</head>
+<body>
+<h1>📓 Diario de lectura</h1>
+<div class="meta">Andrea Tapia Urra · Doctorado en Antropología · Exportado el ${new Date().toLocaleDateString('es-CL', {year:'numeric', month:'long', day:'numeric'})}</div>
+`;
+
+  let total = 0;
+
+  state.cursos.forEach(curso => {
+    (curso.clases || []).forEach(clase => {
+      (clase.textos || []).forEach(texto => {
+        const key = 'nota_' + texto.id;
+        const nota = localStorage.getItem(key);
+        if (!nota || !nota.trim()) return;
+        total++;
+        html += `
+<div class="entrada">
+  <div class="curso-tag">${curso.emoji} ${curso.nombre} › ${clase.nombre}</div>
+  <div class="texto-titulo">${texto.autor ? texto.autor + ' — ' : ''}${texto.titulo}</div>
+  <div class="nota">${nota.trim()}</div>
+</div>
+<hr class="divider">`;
+      });
+    });
+  });
+
+  if (total === 0) {
+    alert('No tienes anotaciones aún para exportar.');
+    return;
+  }
+
+  html += `</body></html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(() => win.print(), 500);
+}
+
+// ── EDIT CURSO ──
+let selectedEmojiEdit = '🏛️';
+let editClaseTarget = null;
+let editTextoTarget = null;
+let replaceHTMLTarget = { cursoId: null, claseId: null, textoId: null };
+let replacedHTML = null;
+
+function selectEmojiEdit(el) {
+  document.querySelectorAll('#emoji-picker-edit .emoji-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedEmojiEdit = el.textContent;
+}
+
+function openModalEditCurso() {
+  const curso = state.cursos.find(c => c.id === currentCursoId);
+  if (!curso) return;
+  document.getElementById('input-edit-curso-nombre').value = curso.nombre;
+  selectedEmojiEdit = curso.emoji;
+  document.querySelectorAll('#emoji-picker-edit .emoji-opt').forEach(e => {
+    e.classList.toggle('selected', e.textContent === curso.emoji);
+  });
+  openModal('modal-edit-curso');
+}
+
+function saveEditCurso() {
+  const nombre = document.getElementById('input-edit-curso-nombre').value.trim();
+  if (!nombre) return alert('Escribe un nombre.');
+  const curso = state.cursos.find(c => c.id === currentCursoId);
+  if (!curso) return;
+  curso.nombre = nombre;
+  curso.emoji = selectedEmojiEdit;
+  save();
+  closeModal('modal-edit-curso');
+  showCurso(currentCursoId);
+}
+
+// ── EDIT CLASE ──
+function openModalEditClase(claseId) {
+  editClaseTarget = claseId;
+  const curso = state.cursos.find(c => c.id === currentCursoId);
+  const clase = curso.clases.find(cl => cl.id === claseId);
+  document.getElementById('input-edit-clase-nombre').value = clase.nombre;
+  openModal('modal-edit-clase');
+}
+
+function saveEditClase() {
+  const nombre = document.getElementById('input-edit-clase-nombre').value.trim();
+  if (!nombre) return alert('Escribe un nombre.');
+  const curso = state.cursos.find(c => c.id === currentCursoId);
+  const clase = curso.clases.find(cl => cl.id === editClaseTarget);
+  clase.nombre = nombre;
+  save();
+  closeModal('modal-edit-clase');
+  showCurso(currentCursoId);
+}
+
+// ── EDIT TEXTO ──
+function openModalEditTexto(cursoId, claseId, textoId) {
+  editTextoTarget = { cursoId, claseId, textoId };
+  const curso = state.cursos.find(c => c.id === cursoId);
+  const clase = curso.clases.find(cl => cl.id === claseId);
+  const texto = clase.textos.find(t => t.id === textoId);
+  document.getElementById('input-edit-texto-autor').value = texto.autor || '';
+  document.getElementById('input-edit-texto-titulo').value = texto.titulo || '';
+  openModal('modal-edit-texto');
+}
+
+function saveEditTexto() {
+  const autor = document.getElementById('input-edit-texto-autor').value.trim();
+  const titulo = document.getElementById('input-edit-texto-titulo').value.trim();
+  if (!titulo) return alert('Escribe un título.');
+  const { cursoId, claseId, textoId } = editTextoTarget;
+  const curso = state.cursos.find(c => c.id === cursoId);
+  const clase = curso.clases.find(cl => cl.id === claseId);
+  const texto = clase.textos.find(t => t.id === textoId);
+  texto.autor = autor;
+  texto.titulo = titulo;
+  save();
+  closeModal('modal-edit-texto');
+  showCurso(cursoId);
+}
+
+// ── DELETE TEXTO ──
+function deleteTexto(cursoId, claseId, textoId) {
+  if (!confirm('¿Eliminar este texto y todas sus anotaciones?')) return;
+  localStorage.removeItem('nota_' + textoId);
+  const curso = state.cursos.find(c => c.id === cursoId);
+  const clase = curso.clases.find(cl => cl.id === claseId);
+  clase.textos = clase.textos.filter(t => t.id !== textoId);
+  save();
+  showCurso(cursoId);
+}
+
+// ── REPLACE HTML ──
+function openModalReplaceHTML(cursoId, claseId, textoId) {
+  replaceHTMLTarget = { cursoId, claseId, textoId };
+  replacedHTML = null;
+  document.getElementById('replace-upload-ok').style.display = 'none';
+  openModal('modal-replace-html');
+}
+
+function handleReplaceHTMLUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    replacedHTML = e.target.result;
+    const ok = document.getElementById('replace-upload-ok');
+    ok.style.display = 'block';
+    ok.textContent = '✓ ' + file.name + ' listo';
+  };
+  reader.readAsText(file);
+}
+
+function saveReplaceHTML() {
+  if (!replacedHTML) return alert('Sube un archivo HTML primero.');
+  const { cursoId, claseId, textoId } = replaceHTMLTarget;
+  const curso = state.cursos.find(c => c.id === cursoId);
+  const clase = curso.clases.find(cl => cl.id === claseId);
+  const texto = clase.textos.find(t => t.id === textoId);
+  texto.html = replacedHTML;
+  save();
+  closeModal('modal-replace-html');
+  showCurso(cursoId);
+}
+
+// ── LIBRETA DE CLASE ──
+function toggleLibreta(claseId) {
+  const div = document.getElementById('libreta-' + claseId);
+  if (!div) return;
+  div.style.display = div.style.display === 'none' ? 'block' : 'none';
+}
+
+function borrarLibreta(claseId) {
+  if (!confirm('¿Borrar la libreta de esta clase?')) return;
+  localStorage.removeItem('nota_clase_' + claseId);
+  const ta = document.getElementById('libreta-ta-' + claseId);
+  if (ta) ta.value = '';
+}
+
+// ── INIT ──
+showHome();
+</script>
+</body>
+</html>
